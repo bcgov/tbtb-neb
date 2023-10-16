@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM registry.access.redhat.com/ubi8/nodejs-18:latest
+FROM artifacts.developer.gov.bc.ca/redhat-access-docker-remote/ubi8/nodejs-16:1-5
 
 # Set the ENV_VAR environment variable
 ARG ENV_ARG
