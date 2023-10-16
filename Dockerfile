@@ -27,4 +27,4 @@ RUN chown -R ${USER_ID} .
 USER ${USER_ID}
 
 #RUN INLINE_RUNTIME_CHUNK=false npm run build
-RUN npm run build && cd build && npm ci --production && node server.js
+RUN npm install && npm run build && cd build && npm ci --production && node server.js
