@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+nav ul.navbar-nav a {
+	text-decoration: none;
+	line-height: 32px;
+}
+
+nav ul.navbar-nav a:hover {
+	color: white;
+}
+
+.border-indigo-400 {
+	--tw-border-opacity: 1;
+	border-color: white;
+}
+
+.navlink-active {
+	color: white !important;
+}
+
+.btn {
+	box-shadow: none !important;
+}
+
+.font-light {
+	font-weight: 200;
+}
+
+.navbar-collapse {
+	visibility: visible !important;
+}
+
+.accordion-item .collapse {
+	visibility: visible !important;
+}
