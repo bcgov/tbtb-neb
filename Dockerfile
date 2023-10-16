@@ -18,11 +18,13 @@ WORKDIR ${HOME_CLIENT}
 
 #COPY package*.json ./
 
-USER ${USER_ID}
+
 
 #RUN npm set progress=false && npm ci --no-cache
 COPY . .
 RUN chown -R ${USER_ID} .
+
+USER ${USER_ID}
 
 #RUN INLINE_RUNTIME_CHUNK=false npm run build
 RUN npm run build && cd build && npm ci --production && node server.js
