@@ -21,7 +21,6 @@ sourceMapSupport.install({ handleUncaughtExceptions: false })
 if (!fs.existsSync('.env')) {
   // Create a .env file with the ENV_VAR environment variable
   fs.writeFileSync('.env', `${process.env.ENV_VAR}\n`);
-  fs.writeFileSync('./build/.env', `${process.env.ENV_VAR}\n`);
 }
 
 new Ignitor(__dirname)
