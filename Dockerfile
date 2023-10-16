@@ -33,6 +33,9 @@
 
 
 ARG NODE_IMAGE=node:16.13.1-alpine
+
+
+FROM $NODE_IMAGE AS base
 ARG PORT=8080
 
 # Set the ENV_VAR environment variable
@@ -40,7 +43,6 @@ ARG ENV_ARG
 ENV ENV_VAR=$ENV_ARG
 ARG USER_ID
 
-FROM $NODE_IMAGE AS base
 RUN apk --no-cache add dumb-init
 RUN mkdir -p /home/node/app && chown ${USER_ID} /home/node/app
 WORKDIR /home/node/app
@@ -48,6 +50,13 @@ USER ${USER_ID}
 RUN mkdir tmp
 
 FROM base AS dependencies
+ARG PORT=8080
+
+# Set the ENV_VAR environment variable
+ARG ENV_ARG
+ENV ENV_VAR=$ENV_ARG
+ARG USER_ID
+
 COPY --chown=${USER_ID} ./package*.json ./
 RUN npm ci
 COPY --chown=${USER_ID} . .
@@ -56,6 +65,12 @@ FROM dependencies AS build
 RUN node ace build --production
 
 FROM base AS production
+ARG PORT=8080
+
+# Set the ENV_VAR environment variable
+ARG ENV_ARG
+ENV ENV_VAR=$ENV_ARG
+ARG USER_ID
 ENV NODE_ENV=production
 ENV PORT=$PORT
 ENV HOST=0.0.0.0
