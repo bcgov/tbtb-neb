@@ -28,4 +28,4 @@ USER ${USER_ID}
 
 
 #RUN INLINE_RUNTIME_CHUNK=false npm run build
-RUN ls -la && pwd && ls build && npm install && npm run build && cd build && npm ci --production && node server.js
+RUN ls -la && pwd && npm install && npm run build && ls build && cd build && npm ci --production && node server.js
