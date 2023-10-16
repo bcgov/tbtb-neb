@@ -75,12 +75,12 @@ objects:
                 requests:
                   cpu: ${CPU_REQUESTS}
                   memory: ${MEM_REQUESTS}
-              livenessProbe:
-                exec:
-                  command:
-                  - /bin/sh
-                  - -c
-                  - /var/www/html/probe-check.sh
+              # livenessProbe:
+              #   exec:
+              #     command:
+              #     - /bin/sh
+              #     - -c
+              #     - /var/www/html/probe-check.sh
                 initialDelaySeconds: 500
                 periodSeconds: 15
                 timeoutSeconds: 5
