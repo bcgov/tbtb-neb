@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM registry.access.redhat.com/ubi8/nodejs-18:1
+FROM registry.access.redhat.com/ubi8/nodejs-18:latest
 
 # Set the ENV_VAR environment variable
 ARG ENV_ARG
@@ -26,5 +26,5 @@ USER ${USER_ID}
 
 
 #RUN INLINE_RUNTIME_CHUNK=false npm run build
-RUN ls -la && pwd && npm install && npm run build && ls build && cd build && npm ci --production 
-RUN cd build && ls -la && pwd && ENV_SILENT=true node server.js
+RUN npm install && npm run build && cd build && npm ci --production 
+RUN cd build && node server.js
