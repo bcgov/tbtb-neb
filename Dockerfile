@@ -26,4 +26,5 @@ USER ${USER_ID}
 
 
 #RUN INLINE_RUNTIME_CHUNK=false npm run build
-RUN ls -la && pwd && npm install && npm run build && ls build && cd build && npm ci --production && ENV_SILENT=true node server.js && ls -la && pwd 
+RUN ls -la && pwd && npm install && npm run build && ls build && cd build && npm ci --production 
+RUN cd build && ls -la && pwd && ENV_SILENT=true node server.js
