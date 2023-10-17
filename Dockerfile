@@ -1,14 +1,14 @@
 # Stage 1: Use yarn to build the app
 FROM artifacts.developer.gov.bc.ca/docker-remote/node:16.20.0 as builder
 WORKDIR /usr/src/app
-COPY ./ ./
+COPY . .
 # RUN npm install -g npm@9.1.1 \
 #     && npm install --omit=dev \
 #     && npm install -D webpack webpack-cli
 # RUN yes | npm run dist
 
 # #RUN INLINE_RUNTIME_CHUNK=false npm run build
-RUN npm install --omit=dev && npm run build && ls -la && cd build && npm ci --production 
+RUN npm install -g npm@10.2.0 && npm install --omit=dev && npm run build && ls -la && cd build && npm ci --production 
 #RUN cd build && node server.js
 
 # Stage 2: Copy the JS React SPA into the Nginx HTML directory
