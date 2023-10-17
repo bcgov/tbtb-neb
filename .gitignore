@@ -5,3 +5,7 @@ coverage
 .DS_STORE
 .env
 tmp
+public/images
+public/*.js
+public/*.css
+public/*.txt
