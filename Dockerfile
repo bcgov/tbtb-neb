@@ -8,7 +8,7 @@ COPY . .
 # RUN yes | npm run dist
 
 # #RUN INLINE_RUNTIME_CHUNK=false npm run build
-RUN npm install -g npm@9.1.1 && npm install --omit=dev 
+RUN npm install
 RUN npm run build && ls -la && cd build && npm ci --production 
 #RUN cd build && node server.js
 
