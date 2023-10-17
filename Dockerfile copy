@@ -1,15 +1,82 @@
-# Stage 1: Use yarn to build the app
-FROM artifacts.developer.gov.bc.ca/docker-remote/node:16.20.0 as builder
-WORKDIR /usr/src/app
-COPY ./ ./
-RUN npm install -g npm@9.1.1 \
-    && npm install --omit=dev \
-    && npm install -D webpack webpack-cli
-RUN yes | npm run dist
 
-# Stage 2: Copy the JS React SPA into the Nginx HTML directory
-FROM artifacts.developer.gov.bc.ca/docker-remote/bitnami/nginx:1.21.6
-COPY ./nginx.conf /opt/bitnami/nginx/conf/
-COPY --from=builder /usr/src/app/public/build /app
-EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+# Use an official Node.js runtime as a parent image
+# FROM artifacts.developer.gov.bc.ca/redhat-access-docker-remote/ubi8/nodejs-16:1-5
+
+# # Set the ENV_VAR environment variable
+# ARG ENV_ARG
+# ENV ENV_VAR=$ENV_ARG
+
+# ARG USER_ID
+
+# # Build 
+# ENV HOME_CLIENT /opt/app-root/src/app
+
+# # Using root to transfer ownership of work dir
+# USER root
+# RUN mkdir -p ${HOME_CLIENT}
+# RUN chown -R ${USER_ID} ${HOME_CLIENT}
+# WORKDIR ${HOME_CLIENT}
+
+# #COPY package*.json ./
+
+# #RUN npm set progress=false && npm ci --no-cache
+# COPY . .
+# RUN chown -R ${USER_ID} .
+
+# USER ${USER_ID}
+
+
+# #RUN INLINE_RUNTIME_CHUNK=false npm run build
+# RUN npm install && npm run build && cd build && npm ci --production 
+# RUN cd build && node server.js
+
+
+
+
+ARG NODE_IMAGE=node:16.13.1-alpine
+
+
+FROM $NODE_IMAGE AS base
+ARG PORT=8080
+
+# Set the ENV_VAR environment variable
+ARG ENV_ARG
+ENV ENV_VAR=$ENV_ARG
+ARG USER_ID
+
+RUN apk --no-cache add dumb-init
+RUN mkdir -p /home/node/app && chown ${USER_ID} /home/node/app
+WORKDIR /home/node/app
+USER ${USER_ID}
+RUN mkdir tmp
+
+FROM base AS dependencies
+ARG PORT=8080
+
+# Set the ENV_VAR environment variable
+ARG ENV_ARG
+ENV ENV_VAR=$ENV_ARG
+ARG USER_ID
+
+COPY --chown=${USER_ID} ./package*.json ./
+RUN npm ci
+COPY --chown=${USER_ID} . .
+
+FROM dependencies AS build
+RUN node ace build --production
+
+FROM base AS production
+ARG PORT=8080
+
+# Set the ENV_VAR environment variable
+ARG ENV_ARG
+ENV ENV_VAR=$ENV_ARG
+ARG USER_ID
+ENV NODE_ENV=production
+ENV PORT=$PORT
+ENV HOST=0.0.0.0
+COPY --chown=${USER_ID} ./package*.json ./
+RUN npm ci --production
+COPY --chown=${USER_ID} --from=build /home/node/app/build .
+EXPOSE $PORT
+CMD [ "dumb-init", "node", "server.js" ]
