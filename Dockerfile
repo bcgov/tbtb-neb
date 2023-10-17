@@ -8,7 +8,7 @@ COPY ./ ./
 # RUN yes | npm run dist
 
 # #RUN INLINE_RUNTIME_CHUNK=false npm run build
-RUN npm install --omit=dev && npm run build && cd build && npm ci --production 
+RUN npm install --omit=dev && ls -la && npm run build && cd build && npm ci --production 
 #RUN cd build && node server.js
 
 # Stage 2: Copy the JS React SPA into the Nginx HTML directory
