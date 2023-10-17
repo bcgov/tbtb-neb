@@ -9,3 +9,7 @@ public/images
 public/*.js
 public/*.css
 public/*.txt
+public/assets/images
+public/assets/*.js
+public/assets/*.css
+public/assets/*.txt
